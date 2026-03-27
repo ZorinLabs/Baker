@@ -249,8 +249,8 @@ const Distribution = ({ user, notify, ask }) => {
                     <h3 className="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] px-2 flex items-center gap-2"><Box size={14}/> Warehouse Loading Bay</h3>
                     <div className="space-y-4">
                        {/* Show Ready Vehicles */}
-                       {fleet.filter(f => f.status === 'Ready').length > 0 ? (
-                         fleet.filter(f => f.status === 'Ready').map(truck => (
+                       {fleet.filter(f => ['Ready', 'In Dockyard'].includes(f.status)).length > 0 ? (
+                         fleet.filter(f => ['Ready', 'In Dockyard'].includes(f.status)).map(truck => (
                             <div key={truck.id} className="glass-card hover:border-amber-500/30 transition-all p-8 space-y-6">
                                <div className="flex justify-between items-center">
                                   <h4 className="text-2xl font-black uppercase tracking-tighter text-white">{truck.name} <span className="block text-[10px] text-slate-500">{truck.id}</span></h4>
@@ -355,6 +355,15 @@ const Distribution = ({ user, notify, ask }) => {
                                    <div>
                                       <h5 className="text-3xl font-black uppercase tracking-tighter">{cmd.outletName}</h5>
                                       <p className="text-[11px] font-black text-slate-500 uppercase tracking-widest mt-1">COMMAND: {cmd.id}</p>
+                                      <div className="mt-4 space-y-2 p-4 bg-black/20 rounded-xl border border-white/5">
+                                         <p className="text-[8px] uppercase tracking-widest text-amber-500 font-black">Delivery Payload</p>
+                                         {cmd.payload.items.map(item => (
+                                           <div key={item.id} className="flex justify-between items-center text-[10px] font-bold uppercase w-full sm:w-48">
+                                              <span className="text-slate-400 truncate pr-2">{item.name}</span>
+                                              <span className="text-white shrink-0 bg-white/5 px-1.5 py-0.5 rounded">{item.qty} Units</span>
+                                           </div>
+                                         ))}
+                                      </div>
                                    </div>
                                 </div>
                                 {isTerminal ? (
