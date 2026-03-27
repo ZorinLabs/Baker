@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BarChart3, TrendingUp, PieChart, Calendar, Download, DollarSign } from 'lucide-react';
 import { dataStore, STORAGE_KEYS } from '../utils/dataStore';
 
-const Reports = ({ user }) => {
+const Reports = ({ user, notify }) => {
   const [sales, setSales] = useState([]);
   const [inventory, setInventory] = useState([]);
 
@@ -26,8 +26,6 @@ const Reports = ({ user }) => {
   const lowStockCount = inventory.filter(i => i.status !== 'In Stock').length;
 
   const handleExportCSV = () => {
-    if (sales.length === 0) return;
-
     const headers = ['Order ID', 'Date', 'Outlet', 'Cashier', 'Method', 'Items', 'Gross Revenue', 'Cost', 'Net Profit'];
     const rows = sales.map(sale => {
       const dateObj = new Date(sale.timestamp);
@@ -58,6 +56,10 @@ const Reports = ({ user }) => {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+    
+    if (notify) {
+      notify(sales.length > 0 ? `Successfully downloaded ${sales.length} transactional records.` : "Downloaded empty BI Report template.", "success", "Export Initialized");
+    }
   };
 
   return (
