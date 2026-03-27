@@ -346,8 +346,10 @@ const Distribution = ({ user, notify, ask }) => {
                     <div className="space-y-6">
                        <h4 className="text-[12px] font-black text-slate-500 uppercase tracking-[0.4em] px-4">TACTICAL MANIFEST</h4>
                        <div className="space-y-5">
-                          {allCommands.filter(c => myTruck.loadedOrders.includes(c.id)).map(cmd => (
-                             <div key={cmd.id} className={`glass-card p-10 flex justify-between items-center border-white/5 shadow-2xl rounded-[40px] ${cmd.status === 'PE-ARRIVED' ? 'opacity-30' : ''}`}>
+                          {allCommands.filter(c => myTruck.loadedOrders.includes(c.id)).map(cmd => {
+                             const isTerminal = ['PE-ARRIVED', 'REQ-PROCESSED', 'PE-COMPLAINT'].includes(cmd.status);
+                             return (
+                             <div key={cmd.id} className={`glass-card p-10 flex justify-between items-center border-white/5 shadow-2xl rounded-[40px] transition-opacity ${isTerminal ? 'opacity-30' : ''}`}>
                                 <div className="flex items-center gap-10">
                                    <div className="w-20 h-20 rounded-[30px] bg-white-5 border border-white/10 flex items-center justify-center text-slate-700"><Store size={40}/></div>
                                    <div>
@@ -355,18 +357,23 @@ const Distribution = ({ user, notify, ask }) => {
                                       <p className="text-[11px] font-black text-slate-500 uppercase tracking-widest mt-1">COMMAND: {cmd.id}</p>
                                    </div>
                                 </div>
-                                {cmd.status === 'PE-ARRIVED' ? (
-                                   <div className="flex items-center gap-2 text-success font-black text-xs uppercase tracking-widest"><ShieldCheck size={20}/> LOGGED</div>
+                                {isTerminal ? (
+                                   <div className="flex flex-col items-end gap-1">
+                                      <div className={"flex items-center gap-2 font-black text-xs uppercase tracking-widest " + (cmd.status === 'PE-COMPLAINT' ? 'text-danger' : 'text-success')}>
+                                         <ShieldCheck size={20}/> 
+                                         {cmd.status === 'REQ-PROCESSED' ? 'VERIFIED BY SITE' : cmd.status === 'PE-COMPLAINT' ? 'INCIDENT LOGGED' : 'LOGGED'}
+                                      </div>
+                                   </div>
                                 ) : (
                                    <button 
                                       onClick={() => confirmDelivery(cmd.id)}
-                                      className="py-5 px-10 bg-amber-500 text-black rounded-3xl font-black uppercase text-xs tracking-widest shadow-xl shadow-amber-500/20"
+                                      className="py-5 px-10 bg-amber-500 text-black rounded-3xl font-black uppercase text-xs tracking-widest shadow-xl shadow-amber-500/20 active:scale-95 transition-all"
                                    >
                                       CONFIRM DROP
                                    </button>
                                 )}
                              </div>
-                          ))}
+                          )})}
                        </div>
                     </div>
 
