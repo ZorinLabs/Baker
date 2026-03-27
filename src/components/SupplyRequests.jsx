@@ -329,12 +329,26 @@ const SupplyRequests = ({ user, notify, ask }) => {
                           </div>
                        </div>
                        {cmd.status === 'PE-ARRIVED' && (
-                         <div className="flex flex-col gap-3">
+                         <div className="flex flex-col gap-3 mt-4">
+                           <div className="p-5 bg-black/40 rounded-2xl border border-success/20 mb-2">
+                             <p className="text-[10px] uppercase tracking-[0.2em] text-success font-black mb-4 border-b border-success/20 pb-3 flex items-center justify-between">
+                               <span>Arrived Cargo Manifest</span>
+                               <span>{cmd.payload.items.reduce((sum, item) => sum + item.qty, 0)} Total Units</span>
+                             </p>
+                             <div className="space-y-3 max-h-40 overflow-y-auto pr-2 custom-scrollbar">
+                               {cmd.payload.items.map(item => (
+                                 <div key={item.id} className="flex justify-between items-center text-[11px] font-bold uppercase">
+                                    <span className="text-slate-300">{item.name}</span>
+                                    <span className="text-success bg-success/10 px-2 py-1 rounded shadow-inner">{item.qty} Units</span>
+                                 </div>
+                               ))}
+                             </div>
+                           </div>
                            <button 
                              onClick={() => handleConfirmReceipt(cmd.id)}
-                             className="w-full py-4 bg-success text-black rounded-xl font-black uppercase text-xs tracking-widest shadow-xl shadow-success/30 hover:scale-[1.02] active:scale-95 transition-all"
+                             className="w-full py-4 bg-success text-black rounded-xl font-black uppercase text-xs tracking-widest shadow-xl shadow-success/30 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-3"
                            >
-                             Finalize Payload & Unload
+                             <PackageCheck size={18} /> Finalize Payload & Unload
                            </button>
                            <button 
                              onClick={() => setIsComplaintModal(cmd)}
