@@ -149,7 +149,8 @@ const SupplyRequests = ({ user, notify, ask }) => {
   };
 
   return (
-    <div className="p-8 max-w-7xl mx-auto space-y-8 animate-in fade-in duration-700">
+    <>
+      <div className="p-8 max-w-7xl mx-auto space-y-8 animate-in fade-in duration-700">
       <header className="flex justify-between items-center bg-amber-500/5 p-6 rounded-3xl border border-amber-500/10 shadow-inner">
         <div>
           <h2 className="text-3xl font-black flex items-center gap-3 tracking-tighter"><Zap className="text-amber-500 animate-pulse" /> Command Hub Requisition</h2>
@@ -367,6 +368,7 @@ const SupplyRequests = ({ user, notify, ask }) => {
             </div>
          </div>
       )}
+      </div>
 
       {/* MODAL: NEW REQUEST SIGNAL */}
       {isNewModal && (
@@ -479,7 +481,7 @@ const SupplyRequests = ({ user, notify, ask }) => {
            </div>
         </div>
       )}
-    </div>
+    </>
   );
 };
 

@@ -131,7 +131,8 @@ const UserManagement = ({ user: currentUser, notify, ask }) => {
   const isAdmin = currentUser.role === 'Admin';
 
   return (
-    <div className="p-8 max-w-7xl mx-auto space-y-8 animate-in fade-in duration-500">
+    <>
+      <div className="p-8 max-w-7xl mx-auto space-y-8 animate-in fade-in duration-500">
       <header className="flex justify-between items-center">
         <div>
           <h2 className="text-3xl font-black flex items-center gap-3 tracking-tighter"><UserCheck className="text-amber-500" /> Personnel Command</h2>
@@ -214,6 +215,7 @@ const UserManagement = ({ user: currentUser, notify, ask }) => {
           </table>
         </div>
       </section>
+      </div>
 
       {/* MODAL: DIRECT ADD */}
       {isAddModal && (
@@ -374,8 +376,7 @@ const UserManagement = ({ user: currentUser, notify, ask }) => {
            </div>
         </div>
       )}
-
-    </div>
+    </>
   );
 };
 

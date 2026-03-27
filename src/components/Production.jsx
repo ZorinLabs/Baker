@@ -65,7 +65,8 @@ const Production = ({ user, notify, ask }) => {
   const isAdmin = user.role === 'Admin' || user.role === 'Production Chef';
 
   return (
-    <div className="p-8 max-w-7xl mx-auto space-y-8 animate-in fade-in duration-700">
+    <>
+      <div className="p-8 max-w-7xl mx-auto space-y-8 animate-in fade-in duration-700">
       <header className="flex justify-between items-center">
         <div>
           <h2 className="text-3xl font-black flex items-center gap-3 tracking-tighter"><Wheat className="text-amber-500" /> Manufacturing Hub</h2>
@@ -176,7 +177,7 @@ const Production = ({ user, notify, ask }) => {
            </div>
         </div>
       )}
-    </div>
+    </>
   );
 };
 
