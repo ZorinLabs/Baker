@@ -134,9 +134,22 @@ const Production = ({ user, notify, ask }) => {
                  <button onClick={() => setIsEditModal(null)} className="text-slate-500 p-2 bg-white-5 rounded-full"><X/></button>
               </div>
               <form onSubmit={handleSave} className="space-y-6">
-                 <div className="space-y-1">
-                    <label className="text-[10px] font-black text-white/40 uppercase tracking-widest">Product Designation</label>
-                    <input type="text" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} className="w-full bg-white-5 border border-white/10 rounded-xl p-4 font-black uppercase outline-none focus:border-amber-500" required />
+                 <div className="grid grid-cols-2 gap-6">
+                   <div className="space-y-1">
+                      <label className="text-[10px] font-black text-white/40 uppercase tracking-widest">Product Designation</label>
+                      <input type="text" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} className="w-full bg-white-5 border border-white/10 rounded-xl p-4 font-black uppercase outline-none focus:border-amber-500" required />
+                   </div>
+                   <div className="space-y-1">
+                      <label className="text-[10px] font-black text-white/40 uppercase tracking-widest">Classification Hierarchy</label>
+                      <select value={formData.category} onChange={e => setFormData({...formData, category: e.target.value})} className="w-full bg-[#120a0a] text-amber-500 font-bold border border-white/10 rounded-xl p-4 uppercase text-sm outline-none focus:border-amber-500 appearance-none cursor-pointer" required>
+                         <option value="Bread">Bread</option>
+                         <option value="Pastry">Pastry & Viennoiserie</option>
+                         <option value="Cakes">Cakes & Desserts</option>
+                         <option value="Savory">Savory Deli</option>
+                         <option value="Drinks">Beverages</option>
+                         <option value="Essentials">Baking Essentials</option>
+                      </select>
+                   </div>
                  </div>
                  <div className="grid grid-cols-3 gap-6">
                     <div className="space-y-1">
