@@ -310,6 +310,71 @@ const UserManagement = ({ user: currentUser, notify, ask }) => {
            </div>
         </div>
       )}
+
+      {/* MODAL: RECRUIT REQUEST */}
+      {isRecruitModal && (
+        <div className="fixed inset-0 bg-black/95 backdrop-blur-2xl z-[100] flex items-center justify-center p-4">
+           <div className="glass-card w-[500px] border-amber-500 p-10 space-y-8 animate-in zoom-in-95 shadow-2xl">
+              <div className="text-center">
+                 <div className="w-20 h-20 bg-amber-500 text-black rounded-3xl mx-auto flex items-center justify-center shadow-xl shadow-amber-500/20 mb-6">
+                    <Send size={40} />
+                 </div>
+                 <h3 className="text-3xl font-black tracking-tight">Request Personnel</h3>
+                 <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mt-2">Submit request to Central Admin for approval</p>
+              </div>
+              <form onSubmit={handleRecruitmentRequest} className="space-y-4">
+                 <div className="space-y-1">
+                    <label className="text-[8px] font-black text-slate-500 uppercase tracking-[0.2em] ml-1">Candidate Name</label>
+                    <input autoFocus type="text" placeholder="e.g. John Doe" value={newRecruit.name} onChange={e => setNewRecruit({...newRecruit, name: e.target.value})} className="w-full bg-white-5 p-4 rounded-xl border border-white/10 outline-none font-bold" required />
+                 </div>
+                 <div className="space-y-1">
+                    <label className="text-[8px] font-black text-slate-500 uppercase tracking-[0.2em] ml-1">Requested Role</label>
+                    <select value={newRecruit.role} onChange={e => setNewRecruit({...newRecruit, role: e.target.value})} className="w-full bg-[#1a1a1a] p-4 rounded-xl border border-white/10 outline-none text-xs font-bold font-mono hover:border-amber-500 transition-colors">
+                       <option value="Cashier">Operational Cashier</option>
+                       <option value="Driver">Fleet Pilot</option>
+                    </select>
+                 </div>
+                 <button type="submit" className="w-full py-5 bg-amber-500 text-black font-black uppercase text-xs tracking-widest rounded-2xl shadow-2xl shadow-amber-500/30 mt-6 hover:scale-[1.03] transition-all">Transmit Request to HQ</button>
+                 <button type="button" onClick={() => setIsRecruitModal(false)} className="w-full py-2 text-slate-600 font-black uppercase text-[10px] tracking-widest mt-2 hover:text-white">Cancel Request</button>
+              </form>
+           </div>
+        </div>
+      )}
+
+      {/* MODAL: PROVISION APPROVAL */}
+      {isProvisionModal && (
+        <div className="fixed inset-0 bg-black/95 backdrop-blur-2xl z-[100] flex items-center justify-center p-4">
+           <div className="glass-card w-[500px] border-amber-500/50 bg-[#120a0a] p-10 space-y-8 animate-in zoom-in-95 shadow-2xl shadow-amber-500/10">
+              <div className="text-center">
+                 <div className="w-20 h-20 bg-amber-500 text-black rounded-3xl mx-auto flex items-center justify-center shadow-xl shadow-amber-500/20 mb-6">
+                    <UserCheck size={40} />
+                 </div>
+                 <h3 className="text-3xl font-black tracking-tight text-amber-500">Authorize Access</h3>
+                 <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-2">Provisioning {isProvisionModal.name} as {isProvisionModal.role}</p>
+                 <p className="text-[9px] font-black text-slate-600 py-1 px-3 bg-white-5 rounded-full inline-block mt-3 border border-white/5">{isProvisionModal.outletName}</p>
+              </div>
+              <form onSubmit={approveRecruit} className="space-y-4">
+                 <div className="space-y-1">
+                    <label className="text-[8px] font-black text-slate-400 uppercase tracking-[0.2em] ml-1">Generate Login Alias</label>
+                    <input autoFocus type="text" placeholder="username" value={provisionData.username} onChange={e => setProvisionData({...provisionData, username: e.target.value.toLowerCase()})} className="w-full bg-black/40 p-4 rounded-xl border border-white/10 font-mono text-sm outline-none focus:border-amber-500" required />
+                 </div>
+                 <div className="space-y-1">
+                    <label className="text-[8px] font-black text-slate-400 uppercase tracking-[0.2em] ml-1">Generate Security Token</label>
+                    <input type="password" placeholder="•••••" value={provisionData.password} onChange={e => setProvisionData({...provisionData, password: e.target.value})} className="w-full bg-black/40 p-4 rounded-xl border border-white/10 font-mono text-sm outline-none focus:border-amber-500" required />
+                 </div>
+                 <button type="submit" className="w-full py-5 bg-amber-500 text-black font-black uppercase text-xs tracking-widest rounded-2xl shadow-2xl shadow-amber-500/30 mt-6 hover:scale-[1.03] transition-all">Authorize & Deploy Identity</button>
+                 <button type="button" onClick={() => {
+                     const all = dataStore.get(STORAGE_KEYS.RECRUITMENT);
+                     dataStore.save(STORAGE_KEYS.RECRUITMENT, all.filter(r => r.id !== isProvisionModal.id));
+                     setIsProvisionModal(null);
+                     notify("Recruitment request rejected and purged from queue.", "error", "Request Denied");
+                     refreshData();
+                 }} className="w-full py-2 text-danger opacity-70 font-black uppercase text-[10px] tracking-widest mt-2 hover:opacity-100 transition-all border border-transparent hover:border-danger/30 rounded">Reject Request</button>
+              </form>
+           </div>
+        </div>
+      )}
+
     </div>
   );
 };
