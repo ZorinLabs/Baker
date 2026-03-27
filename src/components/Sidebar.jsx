@@ -68,6 +68,13 @@ const Sidebar = ({ activeTab, setActiveTab, user, onLogout }) => {
             </button>
           );
         })}
+        {/* Mobile-Only Logout Button */}
+        <button onClick={onLogout} className="nav-item mobile-logout text-danger transition-all duration-300">
+          <div className="flex items-center gap-3 flex-1 text-danger">
+            <LogOut size={20} />
+            <span className="font-semibold text-sm">Logout</span>
+          </div>
+        </button>
       </nav>
 
       <div className="mt-auto pt-6 border-t border-white/5 space-y-4 px-2">

@@ -246,6 +246,10 @@ input, textarea, select {
 .bg-\[\#120a0a\] { background-color: #120a0a; }
 .bg-\[\#1a1a1a\] { background-color: #1a1a1a; }
 
+.mobile-logout {
+  display: none;
+}
+
 /* =========================================
    Mobile Responsiveness Overrides
    ========================================= */
@@ -257,9 +261,9 @@ input, textarea, select {
   
   .sidebar {
     width: 100vw !important;
-    height: 80px !important;
+    height: auto !important;
     padding: 0.5rem !important;
-    flex-direction: row !important;
+    flex-direction: column !important;
     border-right: none !important;
     border-top: 1px solid var(--glass-border);
     background: var(--background);
@@ -277,10 +281,9 @@ input, textarea, select {
   .sidebar nav {
     display: flex;
     flex-direction: row !important;
-    overflow-x: auto;
-    overflow-y: hidden;
-    white-space: nowrap;
-    gap: 0.2rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
     width: 100%;
     padding: 0 !important;
   }
@@ -294,12 +297,25 @@ input, textarea, select {
     padding: 0.5rem;
     gap: 0.25rem;
     justify-content: center !important;
+    flex: 1 1 calc(25% - 0.5rem);
     min-width: 70px;
-    height: 60px;
+    height: auto;
+    border: 1px solid var(--glass-border) !important;
+    background: rgba(255,255,255,0.02) !important;
+    border-radius: 12px;
+  }
+  
+  .nav-item.active {
+    background: rgba(255,255,255,0.1) !important;
+    border-color: var(--primary) !important;
+  }
+
+  .nav-item.mobile-logout {
+    display: flex !important;
   }
   
   .nav-item span {
-    font-size: 0.6rem !important;
+    font-size: 0.65rem !important;
     margin: 0 !important;
   }
   
@@ -316,7 +332,8 @@ input, textarea, select {
   }
   
   .main-content {
-    height: calc(100vh - 80px) !important;
+    height: auto !important;
+    flex: 1;
     padding: 1rem !important;
   }
 
