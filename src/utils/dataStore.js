@@ -1,7 +1,21 @@
 /**
  * Centralized Command Hub & Data Store for Bakery ERP
- * Version 3.0: High-Availability & Resilience Patch
+ * Version 4.0: Firebase Real-time Cloud Sync
  */
+import { initializeApp } from "firebase/app";
+import { getFirestore, doc, setDoc, onSnapshot } from "firebase/firestore";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCJu6Jd3gK-1AhFmHWwNm7S7N3lCeP71Gs",
+  authDomain: "bakery-erp-13d0e.firebaseapp.com",
+  projectId: "bakery-erp-13d0e",
+  storageBucket: "bakery-erp-13d0e.firebasestorage.app",
+  messagingSenderId: "562219473224",
+  appId: "1:562219473224:web:b079198548cf51ac56bb7d"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
 const STORAGE_KEYS = {
   USERS: 'bakery_erp_users_v2',
@@ -37,6 +51,47 @@ const INITIAL_DATA = {
   [STORAGE_KEYS.RECRUITMENT]: [],
 };
 
+// Internal Firebase Sync Engine
+let isSyncing = false;
+let initialized = false;
+
+const initFirebaseSync = () => {
+  if (typeof window === 'undefined' || initialized) return;
+  initialized = true;
+
+  Object.values(STORAGE_KEYS).forEach(key => {
+    // Write initial data to localstorage immediately so it's ready before Firebase resolves
+    const local = localStorage.getItem(key);
+    if (!local || local === "undefined" || local === "null") {
+      localStorage.setItem(key, JSON.stringify(INITIAL_DATA[key] || []));
+    }
+
+    // Initialize document reference
+    const docRef = doc(db, 'erp_store', key);
+
+    // Listen to Firebase Real-time updates
+    onSnapshot(docRef, (docSnap) => {
+      isSyncing = true;
+      if (docSnap.exists()) {
+        const cloudData = docSnap.data().data;
+        localStorage.setItem(key, JSON.stringify(cloudData));
+        window.dispatchEvent(new CustomEvent('datastore-update', { detail: { key } }));
+      } else {
+        // If doc doesn't exist in cloud, push our local initial data
+        const currentData = JSON.parse(localStorage.getItem(key)) || INITIAL_DATA[key] || [];
+        setDoc(docRef, { data: currentData }, { merge: true }).catch(e => console.error("Firebase init error:", e));
+      }
+      setTimeout(() => isSyncing = false, 50);
+    }, (error) => {
+      console.error("Firebase Sync Error for", key, error);
+      isSyncing = false;
+    });
+  });
+};
+
+// Attempt to hook up firebase instantly
+initFirebaseSync();
+
 const dataStore = {
   get: (key) => {
     try {
@@ -57,9 +112,17 @@ const dataStore = {
 
   save: (key, value) => {
     if (!key) return;
+    
+    // 1. Optimistic Local Update
     localStorage.setItem(key, JSON.stringify(value));
     if (typeof window !== 'undefined') {
       window.dispatchEvent(new CustomEvent('datastore-update', { detail: { key } }));
+    }
+
+    // 2. Background Cloud Sync (if not already coming from a firebase push)
+    if (!isSyncing && initialized) {
+      setDoc(doc(db, 'erp_store', key), { data: value }, { merge: true })
+        .catch(err => console.error("Firebase Save Error:", err));
     }
   },
 
