@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { 
   UserPlus, 
   Shield, 
@@ -218,8 +219,8 @@ const UserManagement = ({ user: currentUser, notify, ask }) => {
       </div>
 
       {/* MODAL: DIRECT ADD */}
-      {isAddModal && (
-        <div className="fixed inset-0 bg-black/95 backdrop-blur-2xl z-[100] flex items-center justify-center p-4">
+      {isAddModal && createPortal(
+        <div className="fixed inset-0 bg-black/95 backdrop-blur-2xl z-[99999] flex items-center justify-center p-4">
            <div className="glass-card w-[500px] border-amber-500 p-10 space-y-8 animate-in zoom-in-95 shadow-2xl">
               <div className="text-center">
                  <div className="w-20 h-20 bg-amber-500 text-black rounded-3xl mx-auto flex items-center justify-center shadow-xl shadow-amber-500/20 mb-6">
@@ -267,12 +268,13 @@ const UserManagement = ({ user: currentUser, notify, ask }) => {
                  <button type="button" onClick={() => setIsAddModal(false)} className="w-full py-2 text-slate-600 font-black uppercase text-[10px] tracking-widest mt-2">Abort Generation</button>
               </form>
            </div>
-        </div>
+        </div>,
+        document.body
       )}
 
-      {/* MODAL: EDIT USER (Already has location select) */}
-      {isEditModal && (
-        <div className="fixed inset-0 bg-black/95 backdrop-blur-2xl z-[100] flex items-center justify-center p-4">
+      {/* MODAL: EDIT USER */}
+      {isEditModal && createPortal(
+        <div className="fixed inset-0 bg-black/95 backdrop-blur-2xl z-[99999] flex items-center justify-center p-4">
            {/* ... same as existing edit modal but keeping labels consistent */}
            <div className="glass-card w-[550px] border-amber-500/30 p-10 space-y-8 animate-in zoom-in-95">
               <div className="flex justify-between items-center">
@@ -310,12 +312,13 @@ const UserManagement = ({ user: currentUser, notify, ask }) => {
                  <button type="submit" className="w-full py-4 bg-amber-500 text-black font-black uppercase text-xs tracking-widest rounded-xl shadow-xl shadow-amber-500/20">Synchronize Registry</button>
               </form>
            </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       {/* MODAL: RECRUIT REQUEST */}
-      {isRecruitModal && (
-        <div className="fixed inset-0 bg-black/95 backdrop-blur-2xl z-[100] flex items-center justify-center p-4">
+      {isRecruitModal && createPortal(
+        <div className="fixed inset-0 bg-black/95 backdrop-blur-2xl z-[99999] flex items-center justify-center p-4">
            <div className="glass-card w-[500px] border-amber-500 p-10 space-y-8 animate-in zoom-in-95 shadow-2xl">
               <div className="text-center">
                  <div className="w-20 h-20 bg-amber-500 text-black rounded-3xl mx-auto flex items-center justify-center shadow-xl shadow-amber-500/20 mb-6">
@@ -340,12 +343,13 @@ const UserManagement = ({ user: currentUser, notify, ask }) => {
                  <button type="button" onClick={() => setIsRecruitModal(false)} className="w-full py-2 text-slate-600 font-black uppercase text-[10px] tracking-widest mt-2 hover:text-white">Cancel Request</button>
               </form>
            </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       {/* MODAL: PROVISION APPROVAL */}
-      {isProvisionModal && (
-        <div className="fixed inset-0 bg-black/95 backdrop-blur-2xl z-[100] flex items-center justify-center p-4">
+      {isProvisionModal && createPortal(
+        <div className="fixed inset-0 bg-black/95 backdrop-blur-2xl z-[99999] flex items-center justify-center p-4">
            <div className="glass-card w-[500px] border-amber-500/50 bg-[#120a0a] p-10 space-y-8 animate-in zoom-in-95 shadow-2xl shadow-amber-500/10">
               <div className="text-center">
                  <div className="w-20 h-20 bg-amber-500 text-black rounded-3xl mx-auto flex items-center justify-center shadow-xl shadow-amber-500/20 mb-6">
@@ -374,7 +378,8 @@ const UserManagement = ({ user: currentUser, notify, ask }) => {
                  }} className="w-full py-2 text-danger opacity-70 font-black uppercase text-[10px] tracking-widest mt-2 hover:opacity-100 transition-all border border-transparent hover:border-danger/30 rounded">Reject Request</button>
               </form>
            </div>
-        </div>
+        </div>,
+        document.body
       )}
     </>
   );

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { 
   Plus, 
   Search, 
@@ -124,8 +125,8 @@ const Production = ({ user, notify, ask }) => {
         ))}
       </div>
 
-      {isEditModal && (
-        <div className="fixed inset-0 bg-black/95 backdrop-blur-2xl z-[100] flex items-center justify-center p-4">
+      {isEditModal && createPortal(
+        <div className="fixed inset-0 bg-black/95 backdrop-blur-2xl z-[99999] flex items-center justify-center p-4">
            <div className="glass-card w-[550px] border-amber-500 p-10 space-y-8 animate-in zoom-in-95 shadow-2xl">
               <div className="flex justify-between items-center text-center">
                  <div className="text-left">
@@ -175,7 +176,8 @@ const Production = ({ user, notify, ask }) => {
                  </button>
               </form>
            </div>
-        </div>
+        </div>,
+        document.body
       )}
     </>
   );

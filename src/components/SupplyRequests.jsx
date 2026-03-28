@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { 
   ClipboardList, 
   Send, 
@@ -371,8 +372,8 @@ const SupplyRequests = ({ user, notify, ask }) => {
       </div>
 
       {/* MODAL: NEW REQUEST SIGNAL */}
-      {isNewModal && (
-        <div className="fixed inset-0 bg-black/95 backdrop-blur-2xl z-[100] flex items-center justify-center p-4">
+      {isNewModal && createPortal(
+        <div className="fixed inset-0 bg-black/95 backdrop-blur-2xl z-[99999] flex items-center justify-center p-4">
            <div className="glass-card w-[600px] border-amber-500 p-12 space-y-10 animate-in zoom-in-95 shadow-2xl shadow-black/80">
               <div className="flex justify-between items-center">
                  <h3 className="text-4xl font-black tracking-tighter flex items-center gap-4"><Send size={32} className="text-amber-500"/> HUB REQUISITION</h3>
@@ -404,14 +405,15 @@ const SupplyRequests = ({ user, notify, ask }) => {
               </div>
               <button onClick={handleCreateRequest} className="w-full py-6 bg-amber-500 text-black font-black uppercase text-sm tracking-[0.25em] rounded-3xl shadow-2xl shadow-amber-500/40 hover:scale-[1.03] active:scale-95 transition-all">Broadcast Terminal Requisition</button>
            </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       {/* MODAL: PROCESS REQUEST (DIST MGR) */}
-      {processingCmd && (() => {
+      {processingCmd && createPortal((() => {
         const details = getOutletDetails(processingCmd);
         return (
-        <div className="fixed inset-0 bg-black/95 backdrop-blur-2xl z-[100] flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-black/95 backdrop-blur-2xl z-[99999] flex items-center justify-center p-4">
            <div className="glass-card w-[600px] border-amber-500 p-10 space-y-6 shadow-2xl">
               <div>
                  <h3 className="text-2xl font-black tracking-tighter uppercase">{details.name}</h3>
@@ -457,8 +459,8 @@ const SupplyRequests = ({ user, notify, ask }) => {
       })()}
 
       {/* MODAL: OUTLET COMPLAINT */}
-      {isComplaintModal && (
-        <div className="fixed inset-0 bg-black/95 backdrop-blur-2xl z-[100] flex items-center justify-center p-4">
+      {isComplaintModal && createPortal(
+        <div className="fixed inset-0 bg-black/95 backdrop-blur-2xl z-[99999] flex items-center justify-center p-4">
            <div className="glass-card w-[500px] border-danger/50 bg-[#120a0a] p-10 space-y-6">
               <div>
                  <h3 className="text-2xl font-black tracking-tighter uppercase text-danger">Report Incident</h3>
@@ -479,7 +481,8 @@ const SupplyRequests = ({ user, notify, ask }) => {
                  </div>
               </form>
            </div>
-        </div>
+        </div>,
+        document.body
       )}
     </>
   );
