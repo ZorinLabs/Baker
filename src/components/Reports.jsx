@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { BarChart3, TrendingUp, PieChart, Calendar, Download, DollarSign } from 'lucide-react';
+import { BarChart3, TrendingUp, PieChart, Calendar, Download, DollarSign, Receipt } from 'lucide-react';
 import { dataStore, STORAGE_KEYS } from '../utils/dataStore';
+import { formatCurrency } from '../utils/currency';
 
 const Reports = ({ user, notify }) => {
   const [sales, setSales] = useState([]);
@@ -78,11 +79,11 @@ const Reports = ({ user, notify }) => {
 
       <div className={`grid ${user.role === 'Admin' ? 'grid-cols-5' : 'grid-cols-4'} gap-6`}>
         {[
-          { label: 'Gross Revenue', value: `$${totalSalesVal.toFixed(2)}`, icon: DollarSign, color: 'text-success' },
-          ...(user.role === 'Admin' ? [{ label: 'Net Profit Engine', value: `$${netProfit.toFixed(2)}`, icon: TrendingUp, color: 'text-success' }] : []),
-          { label: 'Total Orders', value: sales.length, icon: PieChart, color: 'text-amber-500' },
+          { label: 'Gross Revenue', value: formatCurrency(totalSalesVal), icon: DollarSign, color: 'text-success' },
+          ...(user.role === 'Admin' ? [{ label: 'Net Profit Engine', value: formatCurrency(netProfit), icon: TrendingUp, color: 'text-success' }] : []),
+          { label: 'Total Orders', value: sales.length, icon: Receipt, color: 'text-amber-500' },
           { label: 'Low Stock Alerts', value: lowStockCount, icon: BarChart3, color: 'text-danger' },
-          { label: 'Avg Order Value', value: sales.length ? `$${(totalSalesVal/sales.length).toFixed(2)}` : '$0.00', icon: TrendingUp, color: 'text-amber-500' },
+          { label: 'Avg Order Value', value: sales.length ? formatCurrency(totalSalesVal/sales.length) : formatCurrency(0), icon: TrendingUp, color: 'text-amber-500' },
         ].map((stat, i) => {
           const Icon = stat.icon;
           return (
@@ -116,7 +117,7 @@ const Reports = ({ user, notify }) => {
                       <div className="text-[10px] text-slate-500">{new Date(sale.timestamp).toLocaleString()} • {sale.cashierName}</div>
                     </div>
                     <div className="text-right">
-                      <div className="font-bold text-lg">${sale.total.toFixed(2)}</div>
+                      <div className="font-bold text-lg">{formatCurrency(sale.total)}</div>
                       <div className="text-[10px] text-slate-400">via {sale.method}</div>
                     </div>
                  </div>

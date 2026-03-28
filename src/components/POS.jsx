@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ShoppingCart, Plus, Minus, Search, Trash2, CreditCard, Banknote, Store } from 'lucide-react';
 import { dataStore, STORAGE_KEYS } from '../utils/dataStore';
+import { formatCurrency } from '../utils/currency';
 
 const POS = ({ user, notify, ask }) => {
   const [products, setProducts] = useState([]);
@@ -43,7 +44,7 @@ const POS = ({ user, notify, ask }) => {
       }
     }
     
-    ask(`Confirm $${total.toFixed(2)} transaction via ${method}?`, () => {
+    ask(`Confirm ${formatCurrency(total)} transaction via ${method}?`, () => {
       // Deduct from inventory
       const allInv = dataStore.get(STORAGE_KEYS.INVENTORY);
       const updatedInv = allInv.map(i => {
@@ -136,7 +137,7 @@ const POS = ({ user, notify, ask }) => {
               </div>
               <h4 className="font-bold text-lg mt-2 group-hover:text-amber-500 transition-colors">{product.name}</h4>
               <div className="flex justify-between items-center mt-4">
-                <span className="text-xl font-bold font-mono">${product.price.toFixed(2)}</span>
+                <span className="text-xl font-bold font-mono">{formatCurrency(product.price)}</span>
                 <button className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${product.stock <= 0 ? 'bg-slate-800' : 'bg-amber-500 hover:bg-amber-600 shadow-lg shadow-amber-500/20'}`}>
                   <Plus size={18} className={product.stock <= 0 ? 'text-slate-600' : 'text-black'} />
                 </button>
@@ -166,7 +167,7 @@ const POS = ({ user, notify, ask }) => {
                 <div key={item.id} className="flex justify-between items-center p-3 rounded-xl bg-white-5 border border-white/5 group">
                   <div>
                     <div className="font-bold text-sm group-hover:text-amber-500 transition-colors">{item.name}</div>
-                    <div className="text-[10px] text-slate-500 font-mono">${item.price.toFixed(2)} × {item.qty}</div>
+                    <div className="text-[10px] text-slate-500 font-mono">{formatCurrency(item.price)} × {item.qty}</div>
                   </div>
                   <div className="flex items-center gap-3">
                     <button onClick={() => removeFromCart(item.id)} className="w-6 h-6 rounded-md bg-white-5 border border-white/10 flex items-center justify-center hover:bg-danger/20 hover:text-danger"><Minus size={14}/></button>
@@ -181,7 +182,7 @@ const POS = ({ user, notify, ask }) => {
           <div className="mt-6 pt-6 border-t border-white/10 space-y-4">
              <div className="flex justify-between font-black text-3xl tracking-tighter">
               <span>Total</span>
-              <span className="text-amber-500">${total.toFixed(2)}</span>
+              <span className="text-amber-500">{formatCurrency(total)}</span>
             </div>
             <div className="grid grid-cols-2 gap-3 pt-2">
               <button 

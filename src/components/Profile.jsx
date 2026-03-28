@@ -11,6 +11,7 @@ import {
   Calendar
 } from 'lucide-react';
 import { dataStore } from '../utils/dataStore';
+import { getCurrency, setCurrency } from '../utils/currency';
 
 const Profile = ({ user, onUpdateUser }) => {
   const [formData, setFormData] = useState({
@@ -21,6 +22,7 @@ const Profile = ({ user, onUpdateUser }) => {
     avatar: user.avatar || ''
   });
   const [isSaving, setIsSaving] = useState(false);
+  const [localCurr, setLocalCurr] = useState(getCurrency());
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -86,11 +88,21 @@ const Profile = ({ user, onUpdateUser }) => {
                     <p>{user.outletId || 'Central Hub / Warehouse'}</p>
                  </div>
               </div>
-              <div className="flex items-center gap-3 text-slate-400">
-                 <Calendar size={18} />
-                 <div className="text-xs">
-                    <p className="font-bold text-white">Member Since</p>
-                    <p>March 2026</p>
+              <div className="flex items-center gap-3 text-slate-400 mt-4 border-t border-white/5 pt-4">
+                 <div className="text-xs w-full">
+                    <p className="font-bold text-white uppercase tracking-widest mb-2">Display Fiat Currency</p>
+                    <select 
+                      value={localCurr}
+                      onChange={(e) => {
+                        setCurrency(e.target.value);
+                        setLocalCurr(e.target.value);
+                        setTimeout(() => window.location.reload(), 200);
+                      }}
+                      className="w-full bg-black/40 text-amber-500 font-bold border border-amber-500/20 rounded-xl p-3 uppercase outline-none focus:border-amber-500 appearance-none cursor-pointer"
+                    >
+                       <option value="USD">USD ($)</option>
+                       <option value="LKR">LKR (Rs.)</option>
+                    </select>
                  </div>
               </div>
            </div>

@@ -18,6 +18,7 @@ import {
   CheckCircle2
 } from 'lucide-react';
 import { dataStore, STORAGE_KEYS } from '../utils/dataStore';
+import { formatCurrency } from '../utils/currency';
 
 const Production = ({ user, notify, ask }) => {
   const [catalog, setCatalog] = useState([]);
@@ -99,8 +100,8 @@ const Production = ({ user, notify, ask }) => {
              <div className="flex justify-between items-start mb-4">
                 <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest bg-white-5 px-2 py-1 rounded">{item.category}</span>
                 <div className="text-right">
-                   <span className="text-xl font-black font-mono text-success block">${(item.price || 0).toFixed(2)}</span>
-                   {isAdmin && <span className="text-[10px] font-black font-mono text-danger uppercase tracking-widest block mt-1">Cost: ${(item.cost || 0).toFixed(2)}</span>}
+                   <span className="text-xl font-black font-mono text-success block">{formatCurrency(item.price)}</span>
+                   {isAdmin && <span className="text-[10px] font-black font-mono text-danger uppercase tracking-widest block mt-1">Cost: {formatCurrency(item.cost)}</span>}
                 </div>
              </div>
              <h3 className="text-2xl font-black tracking-tight group-hover:text-amber-500 transition-colors uppercase">{item.name}</h3>

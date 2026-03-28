@@ -16,6 +16,7 @@ import {
   Navigation
 } from 'lucide-react';
 import { dataStore, STORAGE_KEYS } from '../utils/dataStore';
+import { formatCurrency } from '../utils/currency';
 
 const Dashboard = ({ user }) => {
   const [stats, setStats] = useState({ revenue: 0, orders: 0, staff: 0, lowStock: 0 });
@@ -68,7 +69,7 @@ const Dashboard = ({ user }) => {
     { label: 'Active Fleet Units', value: distStats.fleetActive, icon: Truck, trend: 'Movement', color: 'text-amber-500' },
     { label: 'In-Transit Orders', value: distStats.inTransit, icon: Navigation, trend: 'Real-time', color: 'text-success' },
   ] : [
-    { label: 'Cumulative Revenue', value: `$${stats.revenue.toFixed(2)}`, icon: DollarSign, trend: '+12.4%', color: 'text-success' },
+    { label: 'Cumulative Revenue', value: formatCurrency(stats.revenue), icon: DollarSign, trend: '+12.4%', color: 'text-success' },
     { label: 'Transaction Volume', value: stats.orders, icon: ShoppingBag, trend: '+5.2%', color: 'text-amber-500' },
     { label: 'Personnel Count', value: stats.staff, icon: Users, trend: 'Stable', color: 'text-amber-500' },
     { label: 'Inventory Health', value: stats.lowStock, icon: Package, trend: stats.lowStock > 3 ? 'Critical' : 'Good', color: stats.lowStock > 3 ? 'text-danger' : 'text-success' },
