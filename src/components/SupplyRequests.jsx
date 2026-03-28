@@ -456,7 +456,7 @@ const SupplyRequests = ({ user, notify, ask }) => {
            </div>
         </div>
         );
-      })()}
+      })(), document.body)}
 
       {/* MODAL: OUTLET COMPLAINT */}
       {isComplaintModal && createPortal(

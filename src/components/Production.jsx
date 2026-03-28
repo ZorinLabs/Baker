@@ -125,6 +125,7 @@ const Production = ({ user, notify, ask }) => {
           </div>
         ))}
       </div>
+      </div>
 
       {isEditModal && createPortal(
         <div className="fixed inset-0 bg-black/95 backdrop-blur-2xl z-[99999] flex items-center justify-center p-4">
